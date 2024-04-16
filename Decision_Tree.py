@@ -8,12 +8,12 @@ from sklearn.model_selection import train_test_split
 
 
 
-de_train = pd.read_parquet('../data/de_train.parquet')
+de_train = pd.read_parquet('./data/de_train.parquet')
 output_names = de_train.iloc[:,5:].columns.values.tolist()
 # print(list(de_train['cell_type'].unique()))
 # print(len(list(de_train['sm_name'].unique())))
 
-id_map = pd.read_csv('../data/id_map.csv',index_col=0)
+id_map = pd.read_csv('./data/id_map.csv',index_col=0)
 # print(list(id_map['cell_type'].unique()))
 # print(len(list(id_map['sm_name'].unique())))
 
@@ -42,7 +42,6 @@ model.fit(X_train, y_train)
 # print(f"Test accuracy = {model.score(X_test,y_test) * 100}%")
 
 predictions = model.predict(df)
-predictions.shape
 
 test_out = model.predict(X_test)
 mrrmse_score = np.sqrt(np.square(y_test - test_out).mean(axis=1))
@@ -58,14 +57,12 @@ plt.show()
 output = pd.DataFrame(predictions, index=id_map.index, columns=output_names)
 print(output.head())
 
+# train on whole dataset
+X_train, y_train = num_df.iloc[:,:2], de_train.iloc[:,5:]
+model.fit(X_train, y_train)
+predictions = model.predict(df)
+output = pd.DataFrame(predictions, index=id_map.index, columns=output_names)
 
-
-
-
-
-
-
-
-
-
-
+# submit
+from submit_to_kaggle import submit_to_kaggle
+submit_to_kaggle(output)
