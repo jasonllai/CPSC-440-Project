@@ -35,10 +35,10 @@ def evaluate_model(model, X_test, y_test):
     predictions = model.predict(X_test)
     mrrmse_score = np.sqrt(np.square(y_test - predictions).mean(axis=1))
     print(f'RMMSE = {mrrmse_score.mean()}')
-    # plt.scatter(range(len(mrrmse_score)), mrrmse_score)
-    # plt.xlabel('Iterations')
-    # plt.ylabel('MRRMSE')
-    # plt.show()
+    plt.scatter(range(len(mrrmse_score)), mrrmse_score)
+    plt.xlabel('Iterations')
+    plt.ylabel('MRRMSE')
+    plt.savefig('./files/RF_MRRMSE.png')
     return predictions
 
 def main():
