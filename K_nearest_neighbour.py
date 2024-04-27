@@ -9,9 +9,7 @@ from sklearn.model_selection import GridSearchCV
 de_train = pd.read_parquet('./data/de_train.parquet')
 output_names = de_train.iloc[:,5:].columns.values.tolist()
 
-id_map = pd.read_csv('/kaggle/input/open-problems-single-cell-perturbations/id_map.csv',index_col=0)
-print(list(id_map['cell_type'].unique()))
-print(len(list(id_map['sm_name'].unique())))
+id_map = pd.read_csv('./data/id_map.csv',index_col=0)
 
 encoder = preprocessing.LabelEncoder()
 
@@ -31,8 +29,7 @@ X_train, X_test, y_train, y_test = train_test_split(num_df.iloc[:,:2], de_train.
 kn_model = KNeighborsRegressor()
 kn_model.fit(X_train, y_train)
 
-grid_params = { 'n_neighbors' : [4,15, 30, 60, 100],
-               'weights' : ['uniform','distance'],
+grid_params = { 'n_neighbors' : [4,15, 30, 60, 100], 'weights' : ['uniform','distance'],
                'algorithm':['auto', 'ball_tree', 'kd_tree', 'brute'],
                'metric' : ['minkowski','euclidean','manhattan']}
 
@@ -40,10 +37,7 @@ gs = GridSearchCV(kn_model, grid_params, verbose = 1, cv=3, n_jobs = -1)
 
 g_res = gs.fit(X_train, y_train)
 
-model = KNeighborsRegressor(metric='manhattan', 
-                            n_neighbors=100, 
-                            algorithm = 'brute',
-                            weights='distance')
+model = KNeighborsRegressor(metric='manhattan', n_neighbors=100, algorithm = 'brute', weights='distance')
 model.fit(X_train, y_train)
 
 predictions = model.predict(df)
@@ -53,4 +47,4 @@ test_out = model.predict(X_test)
 mrrmse_score = np.sqrt(np.square(y_test - test_out).mean(axis=1))
 
 output = pd.DataFrame(predictions, index=id_map.index, columns=output_names)
-output.to_csv('submission.csv')
+output.to_csv('./files/KNN_submission.csv')
