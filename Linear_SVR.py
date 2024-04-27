@@ -44,14 +44,12 @@ def main():
     de_train, id_map = load_data()
     df, num_df, output_names = preprocess_data(de_train, id_map)
     
-    # Adjust the test size to always have 255 predictions if possible
     test_size = min(255, len(num_df)) / len(num_df)
     
     X_train, X_test, y_train, y_test = train_test_split(num_df.iloc[:, :2], de_train.iloc[:, 5:], test_size=test_size, shuffle=True)
     predictions = train_and_predict(X_train, X_test, y_train.values, y_test.values)
     evaluate_model(predictions, y_test.values)
 
-    # Create the DataFrame with the 'id' column at the front
     output = pd.DataFrame(predictions, index=id_map.index, columns=output_names)
 
     output.to_csv('./files/SVR_submission.csv')
