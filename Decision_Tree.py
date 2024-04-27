@@ -63,6 +63,8 @@ model.fit(X_train, y_train)
 predictions = model.predict(df)
 output = pd.DataFrame(predictions, index=id_map.index, columns=output_names)
 
+output.to_csv('./files/DT_submission.csv')
+
 # submit
-from submit_to_kaggle import submit_to_kaggle
-submit_to_kaggle(output)
+# from submit_to_kaggle import submit_to_kaggle
+# submit_to_kaggle(output)

@@ -45,6 +45,7 @@ predictions.shape
 
 test_out = model.predict(X_test)
 mrrmse_score = np.sqrt(np.square(y_test - test_out).mean(axis=1))
+print(f' RMMSE = {mrrmse_score.mean()}')
 
 output = pd.DataFrame(predictions, index=id_map.index, columns=output_names)
 output.to_csv('./files/KNN_submission.csv')
