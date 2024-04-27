@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn import preprocessing
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.neighbors import KNeighborsRegressor
 
@@ -54,6 +55,10 @@ def main():
     test_out = make_predictions(model, X_test)
     mrrmse_score = np.sqrt(np.square(y_test - test_out).mean(axis=1))
     print(f' RMMSE = {mrrmse_score.mean()}')
+    plt.scatter(list(range(0, 185)), mrrmse_score)
+    plt.xlabel('Iterations')
+    plt.ylabel('MRRMSE')
+    plt.savefig('./files/KNN_MRRMSE.png')
     output = pd.DataFrame(predictions, index=id_map.index, columns=output_names)
     output.to_csv('./files/KNN_submission.csv')
 

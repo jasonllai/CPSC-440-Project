@@ -38,7 +38,7 @@ def evaluate_model(model, X_test, y_test):
     plt.scatter(range(len(mrrmse_score)), mrrmse_score)
     plt.xlabel('Iterations')
     plt.ylabel('MRRMSE')
-    plt.show()
+    plt.savefig('./files/DT_MRRMSE.png')
     return predictions
 
 def main():

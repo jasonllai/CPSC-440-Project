@@ -39,6 +39,10 @@ def train_and_predict(X_train, X_test, y_train, y_test):
 def evaluate_model(predictions, y_test):
     mrrmse_score = np.sqrt(np.square(y_test - predictions).mean(axis=1))
     print(f'RMMSE = {mrrmse_score.mean()}')
+    plt.scatter(range(len(mrrmse_score)), mrrmse_score)
+    plt.xlabel('Test Instances')
+    plt.ylabel('MRRMSE')
+    plt.savefig('./files/SVR_MRRMSE.png')
 
 def main():
     de_train, id_map = load_data()
